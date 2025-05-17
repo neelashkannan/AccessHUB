@@ -24,6 +24,6 @@ jobs:
 
     - name: Build
       run: |
-        cd NAS-app/server
+        cd server
         npm install
         npm start
