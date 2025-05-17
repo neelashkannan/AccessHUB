@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessHUB - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 80px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-header h2 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .login-btn {
+            background-color: #2ecc71;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        
+        .login-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AccessHUB</h1>
+        </header>
+
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Connect to Remote Server</h2>
+                <p>Enter your SSH credentials to access files</p>
+            </div>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="host">Hostname / IP Address</label>
+                    <input type="text" id="host" name="host" placeholder="e.g., 192.168.1.100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="port">Port</label>
+                    <input type="number" id="port" name="port" value="22" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Connect</button>
+            </form>
+            
+            <div class="local-access" style="margin-top: 20px; text-align: center;">
+                <p style="color: #7f8c8d; margin-bottom: 10px;">Or browse files on this device</p>
+                <button id="local-access-btn" class="login-btn" style="background-color: #3498db;">Browse Local Files</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Files without borders 🌍 by Robonium</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.style.display = 'none';
+            
+            const formData = {
+                host: document.getElementById('host').value,
+                port: document.getElementById('port').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+            
+            try {
+                const response = await fetch('/api/ssh/connect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Redirect to file browser on successful connection
+                    window.location.href = '/';
+                } else {
+                    // Show error message
+                    errorMessage.textContent = data.error || 'Failed to connect. Please check your credentials.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.style.display = 'block';
+            }
+        });
+        
+        // Add local files access handler
+        document.getElementById('local-access-btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/local/connect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                
+                if (response.ok) {
+                    // Redirect to file browser on successful connection
+                    window.location.href = '/';
+                } else {
+                    const errorMessage = document.getElementById('error-message');
+                    errorMessage.textContent = 'Failed to enable local file access.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 

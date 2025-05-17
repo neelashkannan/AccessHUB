@@ -1,0 +1,18 @@
+# AccessHUB Proxy Server Environment Variables
+
+# Server Configuration
+PORT=3001
+
+# Security
+JWT_SECRET=change_this_to_a_long_random_string_in_production
+SESSION_SECRET=another_secure_secret_for_sessions
+
+# CORS Settings - Comma-separated list of allowed origins
+ALLOWED_ORIGINS=https://your-vercel-app.vercel.app,http://localhost:3000
+
+# Optional Tailscale Configuration 
+# Set to 'force' to always try to use Tailscale even if auto-detection fails
+TAILSCALE_MODE=auto
+
+# Logging
+LOG_LEVEL=info 
