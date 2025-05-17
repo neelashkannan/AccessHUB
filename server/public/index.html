@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessHUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-server"></i>
+                <h1>AccessHUB</h1>
+            </div>
+            <div class="breadcrumb" id="breadcrumb">
+                <span class="crumb" data-path="">Home</span>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="content">
+                <div class="controls">
+                    <div class="view-controls">
+                        <button id="grid-view-btn" class="view-btn active" title="Grid View">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button id="list-view-btn" class="view-btn" title="List View">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    <div class="action-controls">
+                        <div class="search-container">
+                            <input type="text" id="search-input" placeholder="Search files...">
+                            <button id="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                        <button id="upload-btn" class="button button-primary" title="Upload Files">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                        <button id="new-dir-btn" class="button button-primary" title="Create New Directory">
+                            <i class="fas fa-folder-plus"></i> New Directory
+                        </button>
+                        <button id="refresh-btn" class="refresh-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button id="logout-btn" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading...</p>
+                </div>
+                
+                <div id="grid-view" class="grid-view">
+                    <!-- Files will be displayed as grid tiles here -->
+                </div>
+                
+                <div class="file-list" id="file-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Modified</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="file-table-body">
+                            <!-- Files will be listed here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="empty-message" id="empty-message">
+                    <i class="fas fa-folder-open"></i>
+                    <p>No files found in this directory</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Files without borders 🌍 by Robonium • <span id="year"></span></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
